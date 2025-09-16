@@ -1,0 +1,86 @@
+@startuml
+hide methods
+hide stereotypes
+skinparam linetype ortho
+
+entity "CLIENTES" as CLIENTES {
+  pk, id, int
+  , nombre, string
+  , apellido, string
+  , direccion_defecto, string
+  fk, medio_pago_defecto_id, int
+}
+
+entity "RESTAURANTES" as RESTAURANTES {
+  pk, id, int
+  , nombre, string
+  , direccion, string
+  fk, zona_id, int
+}
+
+entity "PRODUCTOS" as PRODUCTOS {
+  pk, id, int
+  , nombre, string
+  , categoria, string
+  , precio, decimal
+  , imagen_url, string
+  , descripcion, string
+  , tiempo_preparacion_estimado, int
+  fk, restaurante_id, int
+}
+
+entity "PEDIDOS" as PEDIDOS {
+  pk, id, int
+  fk, cliente_id, int
+  fk, restaurante_id, int
+  fk, repartidor_id, int
+  , direccion_entrega, string
+  , costo_productos, decimal
+  , costo_envio, decimal
+  , comision_plataforma, decimal
+  , propina, decimal
+  , precio_final, decimal
+  , fecha_hora, datetime
+  , estado, string
+  fk, medio_pago_id, int
+}
+
+entity "PEDIDO_ITEMS" as PEDIDO_ITEMS {
+  pk fk, pedido_id, int
+  pk fk, producto_id, int
+  , cantidad, int
+  , observacion, string
+}
+
+entity "REPARTIDORES" as REPARTIDORES {
+  pk, id, int
+  , nombre, string
+  , apellido, string
+  fk, zona_id, int
+}
+
+entity "ZONAS" as ZONAS {
+  pk, id, int
+  , nombre, string
+}
+
+entity "MEDIOS_DE_PAGO" as MEDIOS_DE_PAGO {
+  pk, id, int
+  , nombre, string
+}
+
+CLIENTES ||--o{ PEDIDOS : "realiza"
+RESTAURANTES ||--o{ PEDIDOS : "recibe"
+REPARTIDORES ||--o{ PEDIDOS : "entrega"
+RESTAURANTES ||--o{ PRODUCTOS : "ofrece"
+ZONAS ||--o{ RESTAURANTES : "pertenece a"
+ZONAS ||--o{ REPARTIDORES : "trabaja en"
+MEDIOS_DE_PAGO ||--o{ PEDIDOS : "pagado con"
+CLIENTES ||--o{ MEDIOS_DE_PAGO : "tiene por defecto"
+
+PEDIDOS ||--|{ PEDIDO_ITEMS : "compuesto por"
+PRODUCTOS ||--o{ PEDIDO_ITEMS : "incluido en"
+
+@enduml
+
+
