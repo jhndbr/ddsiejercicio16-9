@@ -3,7 +3,7 @@ hide methods
 hide stereotypes
 skinparam linetype ortho
 
-entity "CLIENTES" as CLIENTES {
+entity "CLIENTE" as CLIENTE {
   pk, id, int
   , nombre, var char [50]
   , apellido, var char [50]
@@ -11,17 +11,16 @@ entity "CLIENTES" as CLIENTES {
   fk, medio_pago_defecto_id, int
 }
 
-entity "RESTAURANTES" as RESTAURANTES {
+entity "RESTAURANTE" as RESTAURANTE {
   pk, id, int
   , nombre, var char [50]
   , direccion, var char [50]
   fk, zona_id, int
 }
 
-entity "PRODUCTOS" as PRODUCTOS {
+entity "PRODUCTO" as PRODUCTO {
   pk, id, int
   , nombre, var char [50]
-  , categoria, var char [50]
   , precio, decimal
   , imagen_url, var char [50]
   , descripcion, var char [50]
@@ -29,7 +28,13 @@ entity "PRODUCTOS" as PRODUCTOS {
   fk, restaurante_id, int
 }
 
-entity "PEDIDOS" as PEDIDOS {
+entity "CATEGORIA" as CATEGORIA {
+  pk, id, int
+  , nombre, var char [50]
+  fk, producto_id, int
+}
+
+entity "PEDIDO" as PEDIDO {
   pk, id, int
   fk, cliente_id, int
   fk, restaurante_id, int
@@ -45,41 +50,42 @@ entity "PEDIDOS" as PEDIDOS {
   fk, medio_pago_id, int
 }
 
-entity "PEDIDO_ITEMS" as PEDIDO_ITEMS {
+entity "PEDIDO_ITEM" as PEDIDO_ITEM {
   pk fk, pedido_id, int
   pk fk, producto_id, int
   , cantidad, int
   , observacion, var char [50]
 }
 
-entity "REPARTIDORES" as REPARTIDORES {
+entity "REPARTIDOR" as REPARTIDOR {
   pk, id, int
   , nombre, var char [50]
   , apellido, var char [50]
   fk, zona_id, int
 }
 
-entity "ZONAS" as ZONAS {
+entity "ZONA" as ZONA {
   pk, id, int
   , nombre, var char [50]
 }
 
-entity "MEDIOS_DE_PAGO" as MEDIOS_DE_PAGO {
+entity "MEDIO_DE_PAGO" as MEDIO_DE_PAGO {
   pk, id, int
   , nombre, var char [50]
 }
 
-CLIENTES ||--o{ PEDIDOS : "realiza"
-RESTAURANTES ||--o{ PEDIDOS : "recibe"
-REPARTIDORES ||--o{ PEDIDOS : "entrega"
-RESTAURANTES ||--o{ PRODUCTOS : "ofrece"
-ZONAS ||--o{ RESTAURANTES : "pertenece a"
-ZONAS ||--o{ REPARTIDORES : "trabaja en"
-MEDIOS_DE_PAGO ||--o{ PEDIDOS : "pagado con"
-CLIENTES ||--o{ MEDIOS_DE_PAGO : "tiene por defecto"
+CLIENTE ||--o{ PEDIDO : "realiza"
+RESTAURANTE ||--o{ PEDIDO : "recibe"
+REPARTIDOR ||--o{ PEDIDO : "entrega"
+RESTAURANTE ||--o{ PRODUCTO : "ofrece"
+ZONA ||--o{ RESTAURANTE : "pertenece a"
+ZONA ||--o{ REPARTIDOR : "trabaja en"
+MEDIO_DE_PAGO ||--o{ PEDIDO : "pagado con"
+CLIENTE ||--o{ MEDIO_DE_PAGO : "tiene por defecto"
+CATEGORIA ||--o{ PRODUCTO
 
-PEDIDOS ||--|{ PEDIDO_ITEMS : "compuesto por"
-PRODUCTOS ||--o{ PEDIDO_ITEMS : "incluido en"
+PEDIDO ||--|{ PEDIDO_ITEM : "compuesto por"
+PRODUCTO ||--o{ PEDIDO_ITEM : "incluido en"
 
 @enduml
 
