@@ -1,0 +1,52 @@
+Entidades Principales:
+
+CLIENTES, RESTAURANTES y REPARTIDORES: 
+Representan a los tres actores principales del sistema. 
+Se guardan sus datos básicos y se asocian a una ZONA.
+
+
+PEDIDOS: 
+Es la entidad central que conecta a todos los actores y contiene el detalle económico del pedido 
+(costos, comisión, propina, etc.) y su estado actual en el flujo de entrega.
+
+
+
+PRODUCTOS: 
+Almacena el catálogo que ofrece cada restaurante, incluyendo precio, 
+descripción y tiempo de preparación.
+
+Relaciones y Claves:
+
+PEDIDO_ITEMS: 
+Esta es una tabla intermedia que resuelve la relación de 
+muchos a muchos entre PEDIDOS y PRODUCTOS. Un pedido puede tener muchos productos, 
+y un producto puede estar en muchos pedidos. Aquí se guarda la cantidad y las observaciones
+específicas para cada producto dentro de un pedido.
+
+Claves Foráneas (FK): 
+Las relaciones se establecen mediante claves foráneas. 
+Por ejemplo, PEDIDOS.cliente_id se conecta con CLIENTES.id para saber quién hizo el pedido. 
+De igual manera, PRODUCTOS.restaurante_id indica a qué restaurante pertenece cada producto.
+
+Claves Primarias (PK): 
+Cada tabla tiene una clave primaria única (generalmente un id autoincremental). 
+En la tabla PEDIDO_ITEMS, se usa una clave primaria compuesta por pedido_id y producto_id para 
+asegurar que no se pueda agregar el mismo producto dos veces en el mismo pedido
+ (se debería modificar la cantidad en la fila existente).
+
+Elementos NO Persistidos:
+
+Precio Final y Tiempo de Entrega Estimado: Si bien se guardan en la tabla PEDIDOS para mantener 
+un registro histórico del momento de la compra, estos son valores calculados.
+ No es necesario persistir cada componente de su cálculo si ya están los datos base 
+ (como el tiempo de preparación de cada producto). El tiempo de transporte es un dato que se obtiene 
+ de un servicio externo y no se almacena, ya que se consulta en el momento.
+
+Estrategias y Restricciones:
+
+No se requiere mapeo de herencia en este modelo básico.
+
+No se identifican estructuras que necesiten ser desnormalizadas para 
+este nivel de requerimientos, aunque para el reporte de "Ranking de productos" 
+se podría considerar una tabla de agregados para no impactar el rendimiento, 
+como se sugiere en el punto 2 de la sección de persistencia.

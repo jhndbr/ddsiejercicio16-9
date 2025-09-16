@@ -5,26 +5,26 @@ skinparam linetype ortho
 
 entity "CLIENTES" as CLIENTES {
   pk, id, int
-  , nombre, string
-  , apellido, string
-  , direccion_defecto, string
+  , nombre, var char [50]
+  , apellido, var char [50]
+  , direccion_defecto, var char [50]
   fk, medio_pago_defecto_id, int
 }
 
 entity "RESTAURANTES" as RESTAURANTES {
   pk, id, int
-  , nombre, string
-  , direccion, string
+  , nombre, var char [50]
+  , direccion, var char [50]
   fk, zona_id, int
 }
 
 entity "PRODUCTOS" as PRODUCTOS {
   pk, id, int
-  , nombre, string
-  , categoria, string
+  , nombre, var char [50]
+  , categoria, var char [50]
   , precio, decimal
-  , imagen_url, string
-  , descripcion, string
+  , imagen_url, var char [50]
+  , descripcion, var char [50]
   , tiempo_preparacion_estimado, int
   fk, restaurante_id, int
 }
@@ -34,14 +34,14 @@ entity "PEDIDOS" as PEDIDOS {
   fk, cliente_id, int
   fk, restaurante_id, int
   fk, repartidor_id, int
-  , direccion_entrega, string
+  , direccion_entrega, var char [50]
   , costo_productos, decimal
   , costo_envio, decimal
   , comision_plataforma, decimal
   , propina, decimal
   , precio_final, decimal
   , fecha_hora, datetime
-  , estado, string
+  , estado, var char [50]
   fk, medio_pago_id, int
 }
 
@@ -49,24 +49,24 @@ entity "PEDIDO_ITEMS" as PEDIDO_ITEMS {
   pk fk, pedido_id, int
   pk fk, producto_id, int
   , cantidad, int
-  , observacion, string
+  , observacion, var char [50]
 }
 
 entity "REPARTIDORES" as REPARTIDORES {
   pk, id, int
-  , nombre, string
-  , apellido, string
+  , nombre, var char [50]
+  , apellido, var char [50]
   fk, zona_id, int
 }
 
 entity "ZONAS" as ZONAS {
   pk, id, int
-  , nombre, string
+  , nombre, var char [50]
 }
 
 entity "MEDIOS_DE_PAGO" as MEDIOS_DE_PAGO {
   pk, id, int
-  , nombre, string
+  , nombre, var char [50]
 }
 
 CLIENTES ||--o{ PEDIDOS : "realiza"
